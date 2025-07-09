@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🎂 Happy Birthday Surprise</title>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+body {margin:0;overflow:hidden;display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#ff9a9e,#fad0c4);font-family:sans-serif;text-align:center;color:#fff;flex-direction:column;padding:20px;}
+h1 {font-size:2.5rem;margin-bottom:10px;}
+img {border-radius:50%;width:200px;height:200px;object-fit:cover;margin:20px 0;border:5px solid #fff;}
+p {font-size:1.2rem;max-width:320px;line-height:1.4;}
+input,button {margin:5px;padding:10px 15px;border:none;border-radius:8px;font-size:1rem;}
+button {background:#fff;color:#333;cursor:pointer;}
+#linkOutput {word-break:break-all;margin-top:10px;font-size:0.9rem;color:#fff;background:rgba(0,0,0,0.2);padding:5px 10px;border-radius:8px;}
+</style>
+</head>
+<body>
+<h1 id="title">Happy Birthday!</h1>
+<p id="tagline">To my best friend forever – your smile lights up every moment, today and always.</p>
+<img id="photo" src="https://placekitten.com/300/300" alt="Birthday Photo" />
+<p id="wish">Wishing you a day filled with happiness and a year filled with joy.</p>
+<input type="file" id="upload" accept="image/*">
+<input type="text" id="nameInput" placeholder="Enter your name">
+<br>
+<button id="playMusic">Play Music 🎶</button>
+<button id="generateLink">Generate Shareable Link 🔗</button>
+<p id="linkOutput"></p>
+<script>
+const title=document.getElementById('title');
+const wish=document.getElementById('wish');
+const nameInput=document.getElementById('nameInput');
+const photo=document.getElementById('photo');
+const upload=document.getElementById('upload');
+const linkOutput=document.getElementById('linkOutput');
+function launchConfetti(){confetti({particleCount:200,spread:100,origin:{y:0.6}});}launchConfetti();
+function playMusic(){new Audio('https://pagalworldi.com/files/download/id/6468').play();} // Ek Tu Hi Yaar Mera clean loop
+upload.addEventListener('change',e=>{photo.src=URL.createObjectURL(e.target.files[0]);});
+nameInput.addEventListener('input',()=>{const name=nameInput.value.trim();if(name){title.textContent=`Happy Birthday, ${name}! 🎂`;wish.textContent=`Wishing you a joyful year ahead, ${name}!`;}else{title.textContent='Happy Birthday!';wish.textContent='Wishing you a day filled with happiness and a year filled with joy.';}});
+document.getElementById('playMusic').addEventListener('click',playMusic);
+document.getElementById('generateLink').addEventListener('click',()=>{let name=nameInput.value.trim();let photoURL=photo.src.includes('placekitten')?'':photo.src;let params=new URLSearchParams();if(name)params.set('name',name);if(photoURL)params.set('photo',photoURL);let shareLink=window.location.origin+window.location.pathname+'?'+params.toString();linkOutput.textContent=shareLink;navigator.clipboard.writeText(shareLink).then(()=>{linkOutput.textContent+=' (Copied!)';});});
+document.addEventListener('DOMContentLoaded',()=>{const params=new URLSearchParams(window.location.search);const name=params.get('name');const photoURL=params.get('photo');if(name){nameInput.value=name;title.textContent=`Happy Birthday, ${name}! 🎂`;wish.textContent=`Wishing you a joyful year ahead, ${name}!`;launchConfetti();}if(photoURL){photo.src=photoURL;}});
+</script>
+</body>
+</html>
